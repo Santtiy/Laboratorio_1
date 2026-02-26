@@ -16,6 +16,7 @@
 
 	const init = () => {
 		setupNavbarScrollStyle();
+		setupDynamicBackground();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
@@ -37,6 +38,17 @@
 
 		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
 		syncHeaderStyle();
+	};
+
+	const setupDynamicBackground = () => {
+		const scrollThreshold = 460;
+
+		const syncBackground = () => {
+			document.body.classList.toggle("is-dynamic-bg", window.scrollY > scrollThreshold);
+		};
+
+		window.addEventListener("scroll", syncBackground, { passive: true });
+		syncBackground();
 	};
 
 	const setupResponsiveMenu = () => {

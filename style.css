@@ -30,6 +30,10 @@ body {
 	line-height: 1.6;
 }
 
+body.is-dynamic-bg {
+	background: radial-gradient(circle at top, #ffffff 0%, #eef2ff 45%, #e5edf8 100%);
+}
+
 img {
 	max-width: 100%;
 	display: block;
