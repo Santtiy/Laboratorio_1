@@ -10,7 +10,7 @@
 		heroForm: ".hero-form",
 		heroButton: ".hero-form button",
 		contactForm: "#contacto form",
-		revealTargets: ".card, .section-title, .section-subtitle, .hero-image, .contact-aside"
+		revealTargets: ".card, .cv-card, .section-title, .section-subtitle, .hero-image, .contact-aside"
 	};
 
 	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
