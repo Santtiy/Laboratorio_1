@@ -334,6 +334,20 @@ textarea:focus {
 	outline: none;
 }
 
+input.is-invalid,
+textarea.is-invalid {
+	border-color: var(--accent-strong);
+	background: #fff5f6;
+	box-shadow: 0 0 0 3px rgba(230, 59, 72, 0.14);
+}
+
+input.is-valid,
+textarea.is-valid {
+	border-color: #1a7f37;
+	background: #f5fbf7;
+	box-shadow: 0 0 0 3px rgba(26, 127, 55, 0.12);
+}
+
 textarea {
 	min-height: 130px;
 	resize: vertical;

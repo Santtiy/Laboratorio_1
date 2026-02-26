@@ -326,7 +326,8 @@
 			const isValid = !errorMessage;
 
 			field.setAttribute("aria-invalid", String(!isValid));
-			field.style.borderColor = isValid ? "var(--border)" : "#e63b48";
+			field.classList.toggle("is-invalid", !isValid);
+			field.classList.toggle("is-valid", isValid);
 
 			if (isValid) {
 				feedback.textContent = showSuccess ? "Campo correcto." : "";
@@ -387,7 +388,7 @@
 				const field = fields[fieldName];
 				if ((field instanceof HTMLInputElement) || (field instanceof HTMLTextAreaElement)) {
 					field.setAttribute("aria-invalid", "false");
-					field.style.borderColor = "var(--border)";
+					field.classList.remove("is-valid", "is-invalid");
 					const feedback = getOrCreateFieldFeedback(field);
 					feedback.textContent = "";
 					feedback.style.color = "transparent";
