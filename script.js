@@ -18,11 +18,59 @@
 		setupNavbarScrollStyle();
 		setupDynamicBackground();
 		setupResumeSection();
+		setupVisibleSectionDetection();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
 		setupScrollReveal();
+	};
+
+	const setupVisibleSectionDetection = () => {
+		const sections = Array.from(document.querySelectorAll("main section[id]"));
+		if (!sections.length) {
+			return;
+		}
+
+		let currentSectionId = "";
+
+		const updateCurrentSection = (sectionId) => {
+			if (!sectionId || sectionId === currentSectionId) {
+				return;
+			}
+
+			currentSectionId = sectionId;
+			document.body.setAttribute("data-visible-section", sectionId);
+			document.dispatchEvent(new CustomEvent("visible-section-change", {
+				detail: { sectionId }
+			}));
+		};
+
+		if (!("IntersectionObserver" in window)) {
+			updateCurrentSection(sections[0].id);
+			return;
+		}
+
+		const observer = new IntersectionObserver((entries) => {
+			const visibleEntries = entries
+				.filter((entry) => entry.isIntersecting)
+				.sort((entryA, entryB) => entryB.intersectionRatio - entryA.intersectionRatio);
+
+			if (!visibleEntries.length) {
+				return;
+			}
+
+			const topVisibleSection = visibleEntries[0].target;
+			if (topVisibleSection instanceof HTMLElement) {
+				updateCurrentSection(topVisibleSection.id);
+			}
+		}, {
+			threshold: [0.25, 0.5, 0.75],
+			rootMargin: "-20% 0px -55% 0px"
+		});
+
+		sections.forEach((section) => observer.observe(section));
+		updateCurrentSection(sections[0].id);
 	};
 
 	const setupNavbarScrollStyle = () => {
