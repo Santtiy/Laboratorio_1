@@ -455,18 +455,18 @@
 			return;
 		}
 
+		const baseClass = "reveal";
+		const visibleClass = "is-visible";
+
 		if (prefersReducedMotion || !("IntersectionObserver" in window)) {
 			elements.forEach((element) => {
-				element.style.opacity = "1";
-				element.style.transform = "none";
+				element.classList.add(baseClass, visibleClass);
 			});
 			return;
 		}
 
 		elements.forEach((element) => {
-			element.style.opacity = "0";
-			element.style.transform = "translateY(20px)";
-			element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+			element.classList.add(baseClass);
 		});
 
 		const observer = new IntersectionObserver((entries, currentObserver) => {
@@ -475,8 +475,7 @@
 					return;
 				}
 
-				entry.target.style.opacity = "1";
-				entry.target.style.transform = "translateY(0)";
+				entry.target.classList.add(visibleClass);
 				currentObserver.unobserve(entry.target);
 			});
 		}, {
