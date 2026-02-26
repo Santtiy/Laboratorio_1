@@ -152,6 +152,8 @@ nav a:hover::after {
 	gap: 1rem;
 	box-shadow: var(--shadow);
 	animation: fadeUp 0.8s ease both;
+	width: min(92vw, 560px);
+	margin: 0 auto;
 }
 
 .hero-form label {
@@ -165,14 +167,7 @@ nav a:hover::after {
 
 .hero-form-group {
 	width: 100%;
-}
-
-.hero-form input {
-	width: 100%;
-	border: none;
-	background: transparent;
-	font-size: 0.95rem;
-	outline: none;
+	min-width: 0;
 }
 
 .hero-form button {
@@ -402,6 +397,22 @@ textarea:focus {
 	outline: none;
 }
 
+.hero-form input {
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	font-size: 0.95rem;
+	min-width: 0;
+}
+
+.hero-form input:focus {
+	border: none;
+	box-shadow: none;
+	outline: none;
+}
+
 textarea {
 	min-height: 130px;
 	resize: vertical;
@@ -506,8 +517,11 @@ footer {
 	}
 
 	.hero-form {
-		grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.75fr) auto;
 		align-items: center;
+		gap: 0.7rem;
+		padding: 0.72rem 0.72rem 0.72rem 1rem;
+		width: min(100%, 560px);
 	}
 
 	.hero-form button {
