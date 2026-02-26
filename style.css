@@ -28,6 +28,7 @@ body {
 	background: radial-gradient(circle at top, #ffffff 0%, #f7f6f4 55%, #eef1f7 100%);
 	color: var(--text);
 	line-height: 1.6;
+	transition: background 0.45s ease;
 }
 
 body.is-dynamic-bg {
@@ -51,6 +52,7 @@ header {
 	backdrop-filter: blur(10px);
 	background: rgba(247, 246, 244, 0.86);
 	border-bottom: 1px solid rgba(228, 230, 236, 0.7);
+	transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 header.is-scrolled {
