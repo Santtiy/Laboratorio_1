@@ -226,9 +226,10 @@
 				if (!value.trim()) {
 					return "El correo electrónico es obligatorio.";
 				}
-				const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-				if (!emailRegex.test(value.trim())) {
-					return "Ingresa un correo electrónico válido.";
+				const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+				const hasDoubleDot = /\.\./.test(value);
+				if (!emailRegex.test(value.trim()) || hasDoubleDot) {
+					return "Usa un correo con @ y dominio válido (ej. nombre@dominio.com).";
 				}
 				return "";
 			},
