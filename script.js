@@ -15,11 +15,28 @@
 	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	const init = () => {
+		setupNavbarScrollStyle();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
 		setupScrollReveal();
+	};
+
+	const setupNavbarScrollStyle = () => {
+		const header = document.querySelector(SELECTORS.header);
+		if (!(header instanceof HTMLElement)) {
+			return;
+		}
+
+		const scrollThreshold = 18;
+
+		const syncHeaderStyle = () => {
+			header.classList.toggle("is-scrolled", window.scrollY > scrollThreshold);
+		};
+
+		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
+		syncHeaderStyle();
 	};
 
 	const setupResponsiveMenu = () => {
