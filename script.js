@@ -6,6 +6,7 @@
 		headerInner: ".header-inner",
 		navList: "nav ul",
 		navLinks: "nav a[href^='#']",
+		themeToggle: ".theme-toggle",
 		heroForm: ".hero-form",
 		heroButton: ".hero-form button",
 		contactForm: "#contacto form",
@@ -13,13 +14,94 @@
 	};
 
 	const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const THEME_STORAGE_KEY = "travelhome-theme";
+	const THEMES = {
+		LIGHT: "light",
+		DARK: "dark"
+	};
 
 	const init = () => {
+		setupThemeToggle();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
 		setupScrollReveal();
+	};
+
+	const getStoredTheme = () => {
+		try {
+			const stored = localStorage.getItem(THEME_STORAGE_KEY);
+			if (stored === THEMES.DARK || stored === THEMES.LIGHT) {
+				return stored;
+			}
+		} catch {
+			// Ignorar errores de acceso a localStorage
+		}
+		return null;
+	};
+
+	const getPreferredTheme = () => {
+		const stored = getStoredTheme();
+		if (stored) {
+			return stored;
+		}
+		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+		return prefersDark ? THEMES.DARK : THEMES.LIGHT;
+	};
+
+	const applyTheme = (theme) => {
+		const root = document.documentElement;
+		const normalized = theme === THEMES.DARK ? THEMES.DARK : THEMES.LIGHT;
+		root.setAttribute("data-theme", normalized);
+		try {
+			localStorage.setItem(THEME_STORAGE_KEY, normalized);
+		} catch {
+			// Ignorar errores de escritura en localStorage
+		}
+	};
+
+	const setupThemeToggle = () => {
+		const headerInner = document.querySelector(SELECTORS.headerInner);
+		if (!headerInner) {
+			applyTheme(getPreferredTheme());
+			return;
+		}
+
+		const existingToggle = document.querySelector(SELECTORS.themeToggle);
+		const themeToggle = existingToggle instanceof HTMLButtonElement
+			? existingToggle
+			: document.createElement("button");
+
+		if (!existingToggle) {
+			themeToggle.type = "button";
+			themeToggle.className = "theme-toggle";
+			themeToggle.setAttribute("aria-label", "Activar modo oscuro");
+			themeToggle.setAttribute("aria-pressed", "false");
+			themeToggle.innerHTML = "🌙";
+			headerInner.appendChild(themeToggle);
+		}
+
+		const syncToggleUi = (theme) => {
+			const isDark = theme === THEMES.DARK;
+			themeToggle.setAttribute("aria-pressed", String(isDark));
+			themeToggle.setAttribute(
+				"aria-label",
+				isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
+			);
+			themeToggle.innerHTML = isDark ? "☀️" : "🌙";
+		};
+
+		const initialTheme = getPreferredTheme();
+		applyTheme(initialTheme);
+		syncToggleUi(initialTheme);
+
+		themeToggle.addEventListener("click", () => {
+			const current = document.documentElement.getAttribute("data-theme") || THEMES.LIGHT;
+			const nextTheme = current === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
+			applyTheme(nextTheme);
+			syncToggleUi(nextTheme);
+		});
 	};
 
 	const setupResponsiveMenu = () => {
