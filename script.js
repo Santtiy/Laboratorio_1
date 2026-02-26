@@ -211,6 +211,12 @@
 		}
 
 		const statusBox = getOrCreateMessageBox(form, "js-form-status", true);
+		const fieldLabels = {
+			nombre: "Nombre",
+			email: "Correo",
+			tipo: "Tema",
+			mensaje: "Mensaje"
+		};
 
 		const validators = {
 			nombre: (value) => {
@@ -258,10 +264,34 @@
 			return Boolean(validators[fieldName](field.value));
 		});
 
+		const getFirstInvalidDetail = () => {
+			const invalidKey = Object.keys(fields).find((fieldName) => {
+				const field = fields[fieldName];
+				if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) {
+					return false;
+				}
+				return Boolean(validators[fieldName](field.value));
+			});
+
+			if (!invalidKey) {
+				return null;
+			}
+
+			return {
+				key: invalidKey,
+				label: fieldLabels[invalidKey] || invalidKey,
+				message: validators[invalidKey](fields[invalidKey].value)
+			};
+		};
+
 		const refreshLiveStatus = () => {
 			const invalidFields = getInvalidFieldNames();
 			if (invalidFields.length) {
-				statusBox.textContent = `Aún faltan datos en: ${invalidFields.join(", ")}.`;
+				const firstIssue = getFirstInvalidDetail();
+				const customMessage = firstIssue
+					? `Corrige ${firstIssue.label}: ${firstIssue.message}`
+					: `Aún faltan datos en: ${invalidFields.join(", ")}.`;
+				statusBox.textContent = customMessage;
 				statusBox.style.color = "#b42318";
 				statusBox.style.opacity = "1";
 				return;
@@ -317,7 +347,10 @@
 			const isFormValid = results.every(Boolean);
 
 			if (!isFormValid) {
-				statusBox.textContent = "Revisa los campos marcados antes de enviar el formulario.";
+				const firstIssue = getFirstInvalidDetail();
+				statusBox.textContent = firstIssue
+					? `No se envió: ${firstIssue.label} → ${firstIssue.message}`
+					: "Revisa los campos marcados antes de enviar el formulario.";
 				statusBox.style.color = "#b42318";
 				statusBox.style.opacity = "1";
 				const firstInvalidField = Object.keys(fields).find((fieldName) => !validateField(fieldName, false));
