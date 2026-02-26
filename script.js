@@ -17,6 +17,7 @@
 	const init = () => {
 		setupNavbarScrollStyle();
 		setupDynamicBackground();
+		setupResumeSection();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
@@ -34,6 +35,8 @@
 
 		const syncHeaderStyle = () => {
 			header.classList.toggle("is-scrolled", window.scrollY > scrollThreshold);
+			const normalized = Math.min(window.scrollY / 240, 1);
+			header.style.setProperty("--nav-shadow-alpha", (0.08 + normalized * 0.16).toFixed(3));
 		};
 
 		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
@@ -49,6 +52,55 @@
 
 		window.addEventListener("scroll", syncBackground, { passive: true });
 		syncBackground();
+	};
+
+	const setupResumeSection = () => {
+		const main = document.querySelector("main");
+		if (!(main instanceof HTMLElement) || main.querySelector("#hoja-de-vida")) {
+			return;
+		}
+
+		const contactSection = document.querySelector("#contacto");
+		const section = document.createElement("section");
+		section.id = "hoja-de-vida";
+		section.setAttribute("aria-labelledby", "hoja-de-vida-title");
+		section.className = "resume-section";
+
+		section.innerHTML = `
+			<header>
+				<h2 id="hoja-de-vida-title" class="section-title">Hoja de vida</h2>
+				<p class="section-subtitle">Perfil personal, formación académica y repositorios.</p>
+			</header>
+			<div class="resume-grid">
+				<article class="card">
+					<h3>Datos personales</h3>
+					<p><strong>Nombre:</strong> Juan José</p>
+					<p><strong>Ciudad:</strong> Bogotá, Colombia</p>
+					<p><strong>Correo:</strong> juan@example.com</p>
+					<p><strong>Perfil:</strong> Estudiante de Ingeniería de Software con interés en desarrollo web y UX.</p>
+				</article>
+				<article class="card">
+					<h3>Formación</h3>
+					<p><strong>Pregrado:</strong> Ingeniería de Software (en curso)</p>
+					<p><strong>Semestre:</strong> Quinto semestre</p>
+					<p><strong>Áreas:</strong> Frontend, JavaScript, diseño responsivo y buenas prácticas web.</p>
+				</article>
+				<article class="card">
+					<h3>Repositorios</h3>
+					<div class="resume-links">
+						<a href="https://github.com/Santtiy/Laboratorio_1" target="_blank" rel="noopener noreferrer">Laboratorio_1</a>
+						<a href="https://github.com/Santtiy" target="_blank" rel="noopener noreferrer">Perfil GitHub</a>
+					</div>
+				</article>
+			</div>
+		`;
+
+		if (contactSection instanceof HTMLElement) {
+			main.insertBefore(section, contactSection);
+			return;
+		}
+
+		main.appendChild(section);
 	};
 
 	const setupResponsiveMenu = () => {

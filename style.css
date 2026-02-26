@@ -52,6 +52,7 @@ header {
 	backdrop-filter: blur(10px);
 	background: rgba(247, 246, 244, 0.86);
 	border-bottom: 1px solid rgba(228, 230, 236, 0.7);
+	box-shadow: 0 10px 26px rgba(16, 17, 20, var(--nav-shadow-alpha, 0.08));
 	transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -302,6 +303,42 @@ section header {
 	background: var(--surface);
 }
 
+.resume-section {
+	background: var(--surface-alt);
+	border-radius: var(--radius-lg);
+	padding: 3rem 1.5rem;
+	margin: 2rem 0;
+}
+
+.resume-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 1.5rem;
+}
+
+.resume-links {
+	display: grid;
+	gap: 0.6rem;
+	margin-top: 0.5rem;
+}
+
+.resume-links a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.65rem 0.9rem;
+	border-radius: 999px;
+	font-weight: 600;
+	background: #f0f1f6;
+	color: var(--text);
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+.resume-links a:hover {
+	background: var(--accent);
+	color: #ffffff;
+}
+
 .contact-grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -460,7 +497,8 @@ footer {
 
 	.benefits-grid,
 	.features-grid,
-	.testimonials-grid {
+	.testimonials-grid,
+	.resume-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
@@ -482,7 +520,8 @@ footer {
 @media (min-width: 1024px) {
 	.benefits-grid,
 	.features-grid,
-	.testimonials-grid {
+	.testimonials-grid,
+	.resume-grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 }
