@@ -31,12 +31,12 @@
 			return;
 		}
 
-		const scrollThreshold = 10;
+		const scrollThreshold = 22;
 
 		const syncHeaderStyle = () => {
 			header.classList.toggle("is-scrolled", window.scrollY > scrollThreshold);
-			const normalized = Math.min(window.scrollY / 240, 1);
-			header.style.setProperty("--nav-shadow-alpha", (0.1 + normalized * 0.3).toFixed(3));
+			const normalized = Math.min(window.scrollY / 320, 1);
+			header.style.setProperty("--nav-shadow-alpha", (0.06 + normalized * 0.12).toFixed(3));
 		};
 
 		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
@@ -44,7 +44,7 @@
 	};
 
 	const setupDynamicBackground = () => {
-		const scrollThreshold = 260;
+		const scrollThreshold = 340;
 
 		const syncBackground = () => {
 			document.body.classList.toggle("is-dynamic-bg", window.scrollY > scrollThreshold);
