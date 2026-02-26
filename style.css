@@ -55,11 +55,11 @@ body {
 	background: radial-gradient(circle at top, #ffffff 0%, #f7f6f4 55%, #eef1f7 100%);
 	color: var(--text);
 	line-height: 1.6;
-	transition: background-color 0.35s ease, color 0.35s ease;
+	transition: background 0.52s ease;
 }
 
-:root[data-theme="dark"] body {
-	background: radial-gradient(circle at top, #181b27 0%, #05060b 55%, #020309 100%);
+body.is-dynamic-bg {
+	background: radial-gradient(circle at top, #ffffff 0%, #e7eefb 45%, #dce5f5 100%);
 }
 
 img {
@@ -79,12 +79,14 @@ header {
 	backdrop-filter: blur(10px);
 	background: rgba(247, 246, 244, 0.86);
 	border-bottom: 1px solid rgba(228, 230, 236, 0.7);
-	transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+	box-shadow: 0 10px 24px rgba(16, 17, 20, var(--nav-shadow-alpha, 0.06));
+	transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-:root[data-theme="dark"] header {
-	background: rgba(7, 8, 14, 0.9);
-	border-bottom-color: rgba(55, 61, 84, 0.9);
+header.is-scrolled {
+	background: rgba(255, 255, 255, 0.95);
+	border-bottom: 1px solid rgba(255, 79, 90, 0.14);
+	backdrop-filter: blur(12px);
 }
 
 .header-inner {
@@ -208,6 +210,8 @@ nav a:hover::after {
 	gap: 1rem;
 	box-shadow: var(--shadow);
 	animation: fadeUp 0.8s ease both;
+	width: min(92vw, 560px);
+	margin: 0 auto;
 }
 
 .hero-form label {
@@ -221,14 +225,7 @@ nav a:hover::after {
 
 .hero-form-group {
 	width: 100%;
-}
-
-.hero-form input {
-	width: 100%;
-	border: none;
-	background: transparent;
-	font-size: 0.95rem;
-	outline: none;
+	min-width: 0;
 }
 
 .hero-form button {
@@ -361,97 +358,59 @@ section header {
 	background: var(--surface);
 }
 
-#hojas-de-vida {
+.resume-section {
 	background: var(--surface-alt);
 	border-radius: var(--radius-lg);
 	padding: 3rem 1.5rem;
 	margin: 2rem 0;
-	transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-#hojas-de-vida header {
-	margin-bottom: 2rem;
-}
-
-.cv-grid {
+.resume-grid {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 1.5rem;
 }
 
-.cv-card {
-	background: var(--surface);
-	border: 1px solid var(--border);
-	border-radius: var(--radius-md);
-	padding: 1.4rem 1.5rem;
-	box-shadow: var(--shadow-soft);
-	transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.35s ease,
-		border-color 0.35s ease, color 0.35s ease;
+.resume-links {
+	display: grid;
+	gap: 0.6rem;
+	margin-top: 0.5rem;
 }
 
-.cv-card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 18px 30px rgba(16, 17, 20, 0.12);
-}
-
-.cv-card-header {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: 1rem;
-	margin-bottom: 1rem;
-}
-
-.cv-eyebrow {
-	font-size: 0.75rem;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--muted);
-}
-
-.cv-name {
-	font-size: 1.2rem;
-	margin: 0.25rem 0;
-}
-
-.cv-role {
-	color: var(--muted);
-}
-
-.cv-chips {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.45rem;
-}
-
-.cv-chip {
+.resume-links a {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0.35rem 0.65rem;
+	padding: 0.65rem 0.9rem;
 	border-radius: 999px;
-	background: var(--surface-alt);
-	border: 1px solid var(--border);
-	font-size: 0.82rem;
-	color: var(--text);
-	transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
-}
-
-.cv-list,
-.cv-links {
-	list-style: none;
-	display: grid;
-	gap: 0.55rem;
-}
-
-.cv-links a {
-	color: var(--accent);
 	font-weight: 600;
-	transition: color 0.2s ease;
+	background: #f0f1f6;
+	color: var(--text);
+	transition: background 0.2s ease, color 0.2s ease;
 }
 
-.cv-links a:hover {
-	color: var(--accent-strong);
+.resume-links a:hover {
+	background: var(--accent);
+	color: #ffffff;
+}
+
+.resume-editor {
+	grid-column: 1 / -1;
+}
+
+.resume-editor-note {
+	color: var(--muted);
+	margin-bottom: 0.9rem;
+}
+
+.resume-form {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+}
+
+.resume-form .btn-primary {
+	justify-self: start;
 }
 
 .contact-grid {
@@ -494,6 +453,22 @@ input:focus,
 textarea:focus {
 	border-color: rgba(255, 79, 90, 0.6);
 	box-shadow: 0 0 0 3px rgba(255, 79, 90, 0.15);
+	outline: none;
+}
+
+.hero-form input {
+	padding: 0;
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	font-size: 0.95rem;
+	min-width: 0;
+}
+
+.hero-form input:focus {
+	border: none;
+	box-shadow: none;
 	outline: none;
 }
 
@@ -622,8 +597,11 @@ footer {
 	}
 
 	.hero-form {
-		grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.75fr) auto;
 		align-items: center;
+		gap: 0.7rem;
+		padding: 0.72rem 0.72rem 0.72rem 1rem;
+		width: min(100%, 560px);
 	}
 
 	.hero-form button {
@@ -633,8 +611,17 @@ footer {
 
 	.benefits-grid,
 	.features-grid,
-	.testimonials-grid {
+	.testimonials-grid,
+	.resume-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.resume-form {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.resume-form .btn-primary {
+		grid-column: 1 / -1;
 	}
 
 	.contact-grid {
@@ -659,7 +646,8 @@ footer {
 @media (min-width: 1024px) {
 	.benefits-grid,
 	.features-grid,
-	.testimonials-grid {
+	.testimonials-grid,
+	.resume-grid {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 	}
 

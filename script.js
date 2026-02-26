@@ -21,7 +21,9 @@
 	};
 
 	const init = () => {
-		setupThemeToggle();
+		setupNavbarScrollStyle();
+		setupDynamicBackground();
+		setupResumeSection();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
@@ -29,78 +31,151 @@
 		setupScrollReveal();
 	};
 
-	const getStoredTheme = () => {
-		try {
-			const stored = localStorage.getItem(THEME_STORAGE_KEY);
-			if (stored === THEMES.DARK || stored === THEMES.LIGHT) {
-				return stored;
-			}
-		} catch {
-			// Ignorar errores de acceso a localStorage
-		}
-		return null;
-	};
-
-	const getPreferredTheme = () => {
-		const stored = getStoredTheme();
-		if (stored) {
-			return stored;
-		}
-		const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-		return prefersDark ? THEMES.DARK : THEMES.LIGHT;
-	};
-
-	const applyTheme = (theme) => {
-		const root = document.documentElement;
-		const normalized = theme === THEMES.DARK ? THEMES.DARK : THEMES.LIGHT;
-		root.setAttribute("data-theme", normalized);
-		try {
-			localStorage.setItem(THEME_STORAGE_KEY, normalized);
-		} catch {
-			// Ignorar errores de escritura en localStorage
-		}
-	};
-
-	const setupThemeToggle = () => {
-		const headerInner = document.querySelector(SELECTORS.headerInner);
-		if (!headerInner) {
-			applyTheme(getPreferredTheme());
+	const setupNavbarScrollStyle = () => {
+		const header = document.querySelector(SELECTORS.header);
+		if (!(header instanceof HTMLElement)) {
 			return;
 		}
 
-		const existingToggle = document.querySelector(SELECTORS.themeToggle);
-		const themeToggle = existingToggle instanceof HTMLButtonElement
-			? existingToggle
-			: document.createElement("button");
+		const scrollThreshold = 22;
 
-		if (!existingToggle) {
-			themeToggle.type = "button";
-			themeToggle.className = "theme-toggle";
-			themeToggle.setAttribute("aria-label", "Activar modo oscuro");
-			themeToggle.setAttribute("aria-pressed", "false");
-			themeToggle.innerHTML = "🌙";
-			headerInner.appendChild(themeToggle);
-		}
-
-		const syncToggleUi = (theme) => {
-			const isDark = theme === THEMES.DARK;
-			themeToggle.setAttribute("aria-pressed", String(isDark));
-			themeToggle.setAttribute(
-				"aria-label",
-				isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
-			);
-			themeToggle.innerHTML = isDark ? "☀️" : "🌙";
+		const syncHeaderStyle = () => {
+			header.classList.toggle("is-scrolled", window.scrollY > scrollThreshold);
+			const normalized = Math.min(window.scrollY / 320, 1);
+			header.style.setProperty("--nav-shadow-alpha", (0.06 + normalized * 0.12).toFixed(3));
 		};
 
-		const initialTheme = getPreferredTheme();
-		applyTheme(initialTheme);
-		syncToggleUi(initialTheme);
+		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
+		syncHeaderStyle();
+	};
 
-		themeToggle.addEventListener("click", () => {
-			const current = document.documentElement.getAttribute("data-theme") || THEMES.LIGHT;
-			const nextTheme = current === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK;
-			applyTheme(nextTheme);
-			syncToggleUi(nextTheme);
+	const setupDynamicBackground = () => {
+		const scrollThreshold = 340;
+
+		const syncBackground = () => {
+			document.body.classList.toggle("is-dynamic-bg", window.scrollY > scrollThreshold);
+		};
+
+		window.addEventListener("scroll", syncBackground, { passive: true });
+		syncBackground();
+	};
+
+	const setupResumeSection = () => {
+		const main = document.querySelector("main");
+		if (!(main instanceof HTMLElement) || main.querySelector("#hoja-de-vida")) {
+			return;
+		}
+
+		const contactSection = document.querySelector("#contacto");
+		const section = document.createElement("section");
+		section.id = "hoja-de-vida";
+		section.setAttribute("aria-labelledby", "hoja-de-vida-title");
+		section.className = "resume-section";
+
+		section.innerHTML = `
+			<header>
+				<h2 id="hoja-de-vida-title" class="section-title">Hoja de vida</h2>
+				<p class="section-subtitle">Ejemplo de perfil orientado a operación de alojamientos urbanos por ciudad.</p>
+			</header>
+			<div class="resume-grid">
+				<article class="card">
+					<h3>Datos personales</h3>
+					<p><strong>Nombre:</strong> <span data-cv="nombre">Camila Rojas (ejemplo)</span></p>
+					<p><strong>Ciudad base:</strong> <span data-cv="ciudad">Medellín, Colombia</span></p>
+					<p><strong>Correo:</strong> <span data-cv="correo">camila.alojamientos@example.com</span></p>
+					<p><strong>Perfil:</strong> <span data-cv="perfil">Coordinadora de experiencias de hospedaje urbano con enfoque en reservas por zonas de ciudad.</span></p>
+				</article>
+				<article class="card">
+					<h3>Formación</h3>
+					<p><strong>Tecnología:</strong> <span data-cv="formacion">Gestión Turística y Hotelera</span></p>
+					<p><strong>Diplomado:</strong> <span data-cv="diplomado">Revenue Management para alojamientos urbanos</span></p>
+					<p><strong>Áreas:</strong> <span data-cv="areas">Optimización de ocupación, segmentación por barrios, experiencia del huésped y analítica de reservas.</span></p>
+				</article>
+				<article class="card">
+					<h3>Repositorios</h3>
+					<div class="resume-links">
+						<a data-cv-link="repo1" href="https://example.com/repo-alojamientos" target="_blank" rel="noopener noreferrer">Repositorio ejemplo 1</a>
+						<a data-cv-link="repo2" href="https://example.com/perfil-desarrollador" target="_blank" rel="noopener noreferrer">Repositorio ejemplo 2</a>
+					</div>
+				</article>
+				<article class="card resume-editor">
+					<h3>Tu hoja de vida (editable)</h3>
+					<p class="resume-editor-note">Completa estos campos para personalizar la hoja de vida de arriba con tus datos.</p>
+					<div class="resume-form">
+						<input type="text" data-cv-input="nombre" placeholder="Nombre completo">
+						<input type="text" data-cv-input="ciudad" placeholder="Ciudad base">
+						<input type="email" data-cv-input="correo" placeholder="Correo electrónico">
+						<input type="text" data-cv-input="perfil" placeholder="Resumen de perfil">
+						<input type="text" data-cv-input="formacion" placeholder="Formación principal">
+						<input type="text" data-cv-input="diplomado" placeholder="Curso o diplomado">
+						<input type="text" data-cv-input="areas" placeholder="Áreas de interés">
+						<input type="text" data-cv-input="repo1" placeholder="URL repositorio ejemplo 1 (https://example.com/...)">
+						<input type="text" data-cv-input="repo2" placeholder="URL repositorio ejemplo 2 (https://example.com/...)">
+						<button type="button" class="btn-primary" data-cv-action="aplicar">Aplicar mis datos</button>
+					</div>
+				</article>
+			</div>
+		`;
+
+		if (contactSection instanceof HTMLElement) {
+			main.insertBefore(section, contactSection);
+			setupResumeEditor(section);
+			return;
+		}
+
+		main.appendChild(section);
+		setupResumeEditor(section);
+	};
+
+	const setupResumeEditor = (section) => {
+		const applyButton = section.querySelector("[data-cv-action='aplicar']");
+		if (!(applyButton instanceof HTMLButtonElement)) {
+			return;
+		}
+
+		const inputByKey = (key) => section.querySelector(`[data-cv-input='${key}']`);
+		const outputByKey = (key) => section.querySelector(`[data-cv='${key}']`);
+		const linkByKey = (key) => section.querySelector(`[data-cv-link='${key}']`);
+
+		const normalizeUrl = (value, fallback) => {
+			const trimmed = value.trim();
+			if (!trimmed) {
+				return fallback;
+			}
+			if (/^https?:\/\//i.test(trimmed)) {
+				return trimmed;
+			}
+			return `https://${trimmed}`;
+		};
+
+		const updateText = (key) => {
+			const input = inputByKey(key);
+			const output = outputByKey(key);
+			if (!(input instanceof HTMLInputElement) || !(output instanceof HTMLElement)) {
+				return;
+			}
+			if (input.value.trim()) {
+				output.textContent = input.value.trim();
+			}
+		};
+
+		applyButton.addEventListener("click", () => {
+			["nombre", "ciudad", "correo", "perfil", "formacion", "diplomado", "areas"].forEach(updateText);
+
+			const repo1Input = inputByKey("repo1");
+			const repo2Input = inputByKey("repo2");
+			const repo1Link = linkByKey("repo1");
+			const repo2Link = linkByKey("repo2");
+
+			if (repo1Input instanceof HTMLInputElement && repo1Link instanceof HTMLAnchorElement) {
+				repo1Link.href = normalizeUrl(repo1Input.value, "https://example.com/repo-alojamientos");
+				repo1Link.textContent = "Repositorio ejemplo 1";
+			}
+
+			if (repo2Input instanceof HTMLInputElement && repo2Link instanceof HTMLAnchorElement) {
+				repo2Link.href = normalizeUrl(repo2Input.value, "https://example.com/perfil-desarrollador");
+				repo2Link.textContent = "Repositorio ejemplo 2";
+			}
 		});
 	};
 
