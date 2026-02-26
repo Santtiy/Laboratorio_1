@@ -31,12 +31,12 @@
 			return;
 		}
 
-		const scrollThreshold = 18;
+		const scrollThreshold = 10;
 
 		const syncHeaderStyle = () => {
 			header.classList.toggle("is-scrolled", window.scrollY > scrollThreshold);
 			const normalized = Math.min(window.scrollY / 240, 1);
-			header.style.setProperty("--nav-shadow-alpha", (0.08 + normalized * 0.16).toFixed(3));
+			header.style.setProperty("--nav-shadow-alpha", (0.1 + normalized * 0.3).toFixed(3));
 		};
 
 		window.addEventListener("scroll", syncHeaderStyle, { passive: true });
@@ -44,7 +44,7 @@
 	};
 
 	const setupDynamicBackground = () => {
-		const scrollThreshold = 460;
+		const scrollThreshold = 260;
 
 		const syncBackground = () => {
 			document.body.classList.toggle("is-dynamic-bg", window.scrollY > scrollThreshold);
@@ -69,27 +69,27 @@
 		section.innerHTML = `
 			<header>
 				<h2 id="hoja-de-vida-title" class="section-title">Hoja de vida</h2>
-				<p class="section-subtitle">Perfil personal, formación académica y repositorios.</p>
+				<p class="section-subtitle">Ejemplo de perfil orientado a operación de alojamientos urbanos por ciudad.</p>
 			</header>
 			<div class="resume-grid">
 				<article class="card">
 					<h3>Datos personales</h3>
-					<p><strong>Nombre:</strong> Juan José</p>
-					<p><strong>Ciudad:</strong> Bogotá, Colombia</p>
-					<p><strong>Correo:</strong> juan@example.com</p>
-					<p><strong>Perfil:</strong> Estudiante de Ingeniería de Software con interés en desarrollo web y UX.</p>
+					<p><strong>Nombre:</strong> Camila Rojas (ejemplo)</p>
+					<p><strong>Ciudad base:</strong> Medellín, Colombia</p>
+					<p><strong>Correo:</strong> camila.alojamientos@example.com</p>
+					<p><strong>Perfil:</strong> Coordinadora de experiencias de hospedaje urbano con enfoque en reservas por zonas de ciudad.</p>
 				</article>
 				<article class="card">
 					<h3>Formación</h3>
-					<p><strong>Pregrado:</strong> Ingeniería de Software (en curso)</p>
-					<p><strong>Semestre:</strong> Quinto semestre</p>
-					<p><strong>Áreas:</strong> Frontend, JavaScript, diseño responsivo y buenas prácticas web.</p>
+					<p><strong>Tecnología:</strong> Gestión Turística y Hotelera</p>
+					<p><strong>Diplomado:</strong> Revenue Management para alojamientos urbanos</p>
+					<p><strong>Áreas:</strong> Optimización de ocupación, segmentación por barrios, experiencia del huésped y analítica de reservas.</p>
 				</article>
 				<article class="card">
 					<h3>Repositorios</h3>
 					<div class="resume-links">
-						<a href="https://github.com/Santtiy/Laboratorio_1" target="_blank" rel="noopener noreferrer">Laboratorio_1</a>
-						<a href="https://github.com/Santtiy" target="_blank" rel="noopener noreferrer">Perfil GitHub</a>
+						<a href="https://github.com/Santtiy/Laboratorio_1" target="_blank" rel="noopener noreferrer">Demo plataforma de alojamientos</a>
+						<a href="https://github.com/Santtiy" target="_blank" rel="noopener noreferrer">Portafolio de repositorios</a>
 					</div>
 				</article>
 			</div>
