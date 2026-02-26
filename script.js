@@ -217,6 +217,7 @@
 			tipo: "Tema",
 			mensaje: "Mensaje"
 		};
+		const submitButton = form.querySelector("button[type='submit']");
 
 		const validators = {
 			nombre: (value) => {
@@ -284,22 +285,35 @@
 			};
 		};
 
-		const refreshLiveStatus = () => {
+		const setSubmitEnabled = (enabled) => {
+			if (!(submitButton instanceof HTMLButtonElement)) {
+				return;
+			}
+			submitButton.disabled = !enabled;
+			submitButton.setAttribute("aria-disabled", String(!enabled));
+		};
+
+		const refreshLiveStatus = (shouldAnnounce = true) => {
 			const invalidFields = getInvalidFieldNames();
+			setSubmitEnabled(!invalidFields.length);
 			if (invalidFields.length) {
 				const firstIssue = getFirstInvalidDetail();
-				const customMessage = firstIssue
-					? `Corrige ${firstIssue.label}: ${firstIssue.message}`
-					: `Aún faltan datos en: ${invalidFields.join(", ")}.`;
-				statusBox.textContent = customMessage;
-				statusBox.style.color = "#b42318";
-				statusBox.style.opacity = "1";
+				if (shouldAnnounce) {
+					const customMessage = firstIssue
+						? `Corrige ${firstIssue.label}: ${firstIssue.message}`
+						: `Aún faltan datos en: ${invalidFields.join(", ")}.`;
+					statusBox.textContent = customMessage;
+					statusBox.style.color = "#b42318";
+					statusBox.style.opacity = "1";
+				}
 				return;
 			}
 
-			statusBox.textContent = "Campos completos, listos para enviar.";
-			statusBox.style.color = "#1a7f37";
-			statusBox.style.opacity = "1";
+			if (shouldAnnounce) {
+				statusBox.textContent = "Campos completos, listos para enviar.";
+				statusBox.style.color = "#1a7f37";
+				statusBox.style.opacity = "1";
+			}
 		};
 
 		const validateField = (fieldName, showSuccess) => {
@@ -337,7 +351,7 @@
 			});
 		});
 
-		form.addEventListener("input", refreshLiveStatus);
+		form.addEventListener("input", () => refreshLiveStatus());
 		refreshLiveStatus();
 
 		form.addEventListener("submit", (event) => {
@@ -367,6 +381,7 @@
 			statusBox.style.color = "#1a7f37";
 			statusBox.style.opacity = "1";
 			form.reset();
+			refreshLiveStatus(false);
 
 			Object.keys(fields).forEach((fieldName) => {
 				const field = fields[fieldName];

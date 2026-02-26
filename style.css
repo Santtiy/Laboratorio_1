@@ -356,6 +356,14 @@ textarea {
 	box-shadow: 0 20px 36px rgba(255, 79, 90, 0.35);
 }
 
+.btn-primary:disabled,
+.btn-primary[aria-disabled="true"] {
+	opacity: 0.55;
+	cursor: not-allowed;
+	box-shadow: none;
+	transform: none;
+}
+
 .contact-aside {
 	background: var(--surface);
 	border: 1px solid var(--border);
