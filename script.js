@@ -19,11 +19,41 @@
 		setupDynamicBackground();
 		setupResumeSection();
 		setupVisibleSectionDetection();
+		setupActiveNavHighlight();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
 		setupScrollReveal();
+	};
+
+	const setupActiveNavHighlight = () => {
+		const navLinks = Array.from(document.querySelectorAll(SELECTORS.navLinks));
+		if (!navLinks.length) {
+			return;
+		}
+
+		const setActiveLink = (sectionId) => {
+			navLinks.forEach((link) => {
+				const href = link.getAttribute("href");
+				const isActive = href === `#${sectionId}`;
+				link.classList.toggle("is-active", isActive);
+				link.setAttribute("aria-current", isActive ? "page" : "false");
+			});
+		};
+
+		document.addEventListener("visible-section-change", (event) => {
+			const detail = event.detail;
+			if (!detail || typeof detail.sectionId !== "string") {
+				return;
+			}
+			setActiveLink(detail.sectionId);
+		});
+
+		const initialSection = document.body.getAttribute("data-visible-section");
+		if (initialSection) {
+			setActiveLink(initialSection);
+		}
 	};
 
 	const setupVisibleSectionDetection = () => {
