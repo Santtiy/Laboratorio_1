@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>TravelHome - Encuentra tu próximo alojamiento</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<header>
+		<div class="header-inner">
+			<div class="logo" aria-label="TravelHome logo">
+				<span>🏡</span>
+				<span>TravelHome</span>
+			</div>
+			<nav aria-label="Navegación principal">
+				<ul>
+					<li><a href="#beneficios">Beneficios</a></li>
+					<li><a href="#caracteristicas">Características</a></li>
+					<li><a href="#testimonios">Testimonios</a></li>
+					<li><a href="#contacto">Contacto</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<section class="hero" aria-labelledby="hero-title">
+		<div class="hero-inner">
+			<article>
+				<h1 id="hero-title">Encuentra el alojamiento perfecto en cualquier ciudad</h1>
+				<p>
+					Explora miles de departamentos, lofts y casas únicas alrededor del mundo, reservadas y valoradas por
+					viajeros como tú.
+				</p>
+				<div class="hero-form" aria-label="Buscador de alojamientos">
+					<div class="hero-form-group">
+						<label for="destino">Destino</label>
+						<input id="destino" name="destino" type="text" placeholder="¿A dónde viajas?">
+					</div>
+					<div class="hero-form-group">
+						<label for="fechas">Fechas</label>
+						<input id="fechas" name="fechas" type="text" placeholder="Agrega fechas">
+					</div>
+					<div class="hero-form-group">
+						<label for="huespedes">Huéspedes</label>
+						<input id="huespedes" name="huespedes" type="number" min="1" value="2">
+					</div>
+					<button type="button" aria-label="Buscar alojamiento">🔍</button>
+				</div>
+			</article>
+
+			<figure class="hero-image">
+				<img src="https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=1200"
+					alt="Sala de un apartamento moderno y acogedor">
+			</figure>
+		</div>
+	</section>
+
+	<main>
+		<section id="beneficios" aria-labelledby="beneficios-title">
+			<header>
+				<h2 id="beneficios-title" class="section-title">¿Por qué reservar con TravelHome?</h2>
+				<p class="section-subtitle">Un diseño pensado para que tu próxima estadía sea sencilla, segura y
+					memorable.</p>
+			</header>
+			<div class="benefits-grid">
+				<article class="card">
+					<h3>Variedad de alojamientos</h3>
+					<p>Desde lofts urbanos hasta cabañas en la montaña, encuentra espacios únicos adaptados a tu estilo
+						de viaje.</p>
+				</article>
+				<article class="card">
+					<h3>Reservas seguras</h3>
+					<p>Pagos protegidos y anfitriones verificados para que solo te preocupes por disfrutar el destino.</p>
+				</article>
+				<article class="card">
+					<h3>Opiniones reales</h3>
+					<p>Lee reseñas detalladas y puntuaciones de otros viajeros antes de elegir tu próximo hogar temporal.
+					</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="caracteristicas" aria-labelledby="caracteristicas-title">
+			<header>
+				<h2 id="caracteristicas-title" class="section-title">Todo lo que necesitas en un solo lugar</h2>
+				<p class="section-subtitle">Herramientas pensadas para planear tu viaje de principio a fin.</p>
+			</header>
+			<div class="features-grid">
+				<article class="card">
+					<h3>Filtros inteligentes</h3>
+					<p>Selecciona tu rango de precio, tipo de propiedad, amenities y políticas de cancelación en segundos.
+					</p>
+				</article>
+				<article class="card">
+					<h3>Mapas interactivos</h3>
+					<p>Ubica tu alojamiento cerca de los puntos de interés más importantes de cada ciudad.</p>
+				</article>
+				<article class="card">
+					<h3>Listas de favoritos</h3>
+					<p>Guarda tus espacios preferidos y compártelos con tus compañeros de viaje antes de reservar.</p>
+				</article>
+				<article class="card">
+					<h3>Atención 24/7</h3>
+					<p>Un equipo de soporte disponible en todo momento para ayudarte durante tu experiencia.</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="testimonios" aria-labelledby="testimonios-title">
+			<header>
+				<h2 id="testimonios-title" class="section-title">Lo que dicen nuestros viajeros</h2>
+				<p class="section-subtitle">Experiencias reales de personas que encontraron su lugar ideal con
+					TravelHome.</p>
+			</header>
+			<div class="testimonials-grid">
+				<article class="card" aria-label="Testimonio de Laura">
+					<div class="testimonial-header">
+						<img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=200"
+							alt="Retrato de una mujer sonriendo">
+						<div>
+							<div class="testimonial-name">Laura</div>
+							<div class="testimonial-role">Viajera frecuente</div>
+						</div>
+					</div>
+					<p>“Encontré un loft en el centro histórico que hizo que mi viaje fuera inolvidable. El proceso de
+						reserva fue rápido y muy claro.”</p>
+				</article>
+
+				<article class="card" aria-label="Testimonio de Andrés">
+					<div class="testimonial-header">
+						<img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=200"
+							alt="Retrato de un hombre joven">
+						<div>
+							<div class="testimonial-name">Andrés</div>
+							<div class="testimonial-role">Anfitrión</div>
+						</div>
+					</div>
+					<p>“Como anfitrión me siento acompañado en todo momento. Las herramientas para gestionar reservas son
+						muy intuitivas.”</p>
+				</article>
+
+				<article class="card" aria-label="Testimonio de Sofía y Mateo">
+					<div class="testimonial-header">
+						<img src="https://images.pexels.com/photos/14018693/pexels-photo-14018693.jpeg?auto=compress&cs=tinysrgb&w=200"
+							alt="Pareja sentada en un sofá riendo">
+						<div>
+							<div class="testimonial-name">Sofía y Mateo</div>
+							<div class="testimonial-role">Viaje en pareja</div>
+						</div>
+					</div>
+					<p>“Nos encantó poder comparar fácilmente distintos barrios y elegir el que mejor se adaptaba a
+						nuestro estilo.”</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="contacto" aria-labelledby="contacto-title">
+			<header>
+				<h2 id="contacto-title" class="section-title">¿Tienes dudas o quieres ser anfitrión?</h2>
+				<p class="section-subtitle">Completa el formulario y nuestro equipo se pondrá en contacto contigo lo
+					antes posible.</p>
+			</header>
+			<div class="contact-grid">
+				<article>
+					<h3>Envíanos un mensaje</h3>
+					<form action="#" method="post">
+						<div>
+							<label for="nombre">Nombre completo</label>
+							<input id="nombre" name="nombre" type="text" required>
+						</div>
+						<div>
+							<label for="email">Correo electrónico</label>
+							<input id="email" name="email" type="email" required>
+						</div>
+						<div class="form-full">
+							<label for="tipo">¿Sobre qué quieres hablar?</label>
+							<input id="tipo" name="tipo" type="text" placeholder="Reservas, soporte, ser anfitrión...">
+						</div>
+						<div class="form-full">
+							<label for="mensaje">Mensaje</label>
+							<textarea id="mensaje" name="mensaje" required></textarea>
+						</div>
+						<div class="form-full">
+							<button type="submit" class="btn-primary">Enviar mensaje</button>
+						</div>
+					</form>
+				</article>
+
+				<aside class="contact-aside" aria-label="Información de contacto alternativa">
+					<h3>También puedes encontrarnos en</h3>
+					<p><strong>Correo:</strong> ayuda@travelhome.com</p>
+					<p><strong>Teléfono:</strong> +57 300 000 0000</p>
+					<p>Resolvemos dudas sobre reservas, pagos, seguridad y consejos para sacar el máximo provecho a tu
+						espacio como anfitrión.</p>
+				</aside>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-inner">
+			<p>&copy; 2026 TravelHome. Todos los derechos reservados.</p>
+			<div class="social-links" aria-label="Redes sociales de TravelHome">
+				<a href="#" aria-label="Visitar nuestro perfil en Instagram">IG</a>
+				<a href="#" aria-label="Visitar nuestro perfil en Facebook">FB</a>
+				<a href="#" aria-label="Visitar nuestro perfil en Twitter">X</a>
+				<a href="#" aria-label="Visitar nuestro canal en YouTube">YT</a>
+			</div>
+		</div>
+	</footer>
+</body>
+
+</html>
+
