@@ -19,6 +19,7 @@
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
+		renderResumeSection();
 		setupScrollReveal();
 	};
 
@@ -443,6 +444,92 @@
 				window.scrollTo({ top, behavior: prefersReducedMotion ? "auto" : "smooth" });
 			}
 		});
+	};
+
+	const renderResumeSection = () => {
+		const main = document.querySelector("main");
+		if (!(main instanceof HTMLElement) || document.querySelector("#hoja-de-vida")) {
+			return;
+		}
+
+		const section = document.createElement("section");
+		section.id = "hoja-de-vida";
+		section.className = "resume-section";
+		section.setAttribute("aria-labelledby", "cv-title");
+
+		const header = document.createElement("header");
+		const title = document.createElement("h2");
+		title.id = "cv-title";
+		title.className = "section-title";
+		title.textContent = "Hoja de vida";
+		const subtitle = document.createElement("p");
+		subtitle.className = "section-subtitle";
+		subtitle.textContent = "Resumen de perfil, formación y proyectos recientes.";
+		header.append(title, subtitle);
+
+		const grid = document.createElement("div");
+		grid.className = "resume-grid";
+
+		const createList = (items) => {
+			const list = document.createElement("ul");
+			list.className = "resume-list";
+			items.forEach((item) => {
+				const li = document.createElement("li");
+				li.innerHTML = item;
+				list.appendChild(li);
+			});
+			return list;
+		};
+
+		const personalCard = document.createElement("article");
+		personalCard.className = "card resume-card";
+		const personalTitle = document.createElement("h3");
+		personalTitle.textContent = "Datos personales";
+		const personalList = createList([
+			"<strong>Nombre:</strong> Camila Duarte",
+			"<strong>Ubicación:</strong> Pasto, Colombia (remoto y presencial)",
+			"<strong>Rol:</strong> Frontend & UI Engineer",
+			"<strong>Contacto:</strong> camila.duarte@travelhome.com"
+		]);
+		personalCard.append(personalTitle, personalList);
+
+		const educationCard = document.createElement("article");
+		educationCard.className = "card resume-card";
+		const educationTitle = document.createElement("h3");
+		educationTitle.textContent = "Formación";
+		const educationList = createList([
+			"<strong>2024</strong> · Especialización en Arquitectura Frontend (Platzi)",
+			"<strong>2022</strong> · Ingeniería de Sistemas, Universidad de Nariño",
+			"<strong>Certificaciones:</strong> React, Accesibilidad Web, Diseño de Sistemas"
+		]);
+		educationCard.append(educationTitle, educationList);
+
+		const projectsCard = document.createElement("article");
+		projectsCard.className = "card resume-card";
+		const projectsTitle = document.createElement("h3");
+		projectsTitle.textContent = "Repositorios destacados";
+		const projectsList = document.createElement("ul");
+		projectsList.className = "resume-links";
+		[
+			{ label: "TravelHome UI Kit", url: "https://github.com/Santtiy/Laboratorio_1" },
+			{ label: "Dashboard de reservas", url: "https://github.com/Santtiy/dashboard-reservas" },
+			{ label: "Componentes de accesibilidad", url: "https://github.com/Santtiy/a11y-components" }
+		].forEach((repo) => {
+			const li = document.createElement("li");
+			const link = document.createElement("a");
+			link.href = repo.url;
+			link.target = "_blank";
+			link.rel = "noopener noreferrer";
+			link.textContent = repo.label;
+			link.className = "resume-link";
+			li.appendChild(link);
+			projectsList.appendChild(li);
+		});
+		projectsCard.append(projectsTitle, projectsList);
+
+		grid.append(personalCard, educationCard, projectsCard);
+		section.append(header, grid);
+		main.appendChild(section);
 	};
 
 	const setupScrollReveal = () => {
