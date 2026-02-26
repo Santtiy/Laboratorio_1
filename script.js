@@ -249,6 +249,28 @@
 			}
 		};
 
+		const getInvalidFieldNames = () => Object.keys(fields).filter((fieldName) => {
+			const field = fields[fieldName];
+			if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) {
+				return false;
+			}
+			return Boolean(validators[fieldName](field.value));
+		});
+
+		const refreshLiveStatus = () => {
+			const invalidFields = getInvalidFieldNames();
+			if (invalidFields.length) {
+				statusBox.textContent = `Aún faltan datos en: ${invalidFields.join(", ")}.`;
+				statusBox.style.color = "#b42318";
+				statusBox.style.opacity = "1";
+				return;
+			}
+
+			statusBox.textContent = "Campos completos, listos para enviar.";
+			statusBox.style.color = "#1a7f37";
+			statusBox.style.opacity = "1";
+		};
+
 		const validateField = (fieldName, showSuccess) => {
 			const field = fields[fieldName];
 			if (!(field instanceof HTMLInputElement) && !(field instanceof HTMLTextAreaElement)) {
@@ -278,8 +300,14 @@
 				return;
 			}
 			field.addEventListener("blur", () => validateField(fieldName, true));
-			field.addEventListener("input", () => validateField(fieldName, false));
+			field.addEventListener("input", () => {
+				validateField(fieldName, false);
+				refreshLiveStatus();
+			});
 		});
+
+		form.addEventListener("input", refreshLiveStatus);
+		refreshLiveStatus();
 
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
