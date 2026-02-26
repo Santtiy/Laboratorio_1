@@ -340,6 +340,25 @@ section header {
 	color: #ffffff;
 }
 
+.resume-editor {
+	grid-column: 1 / -1;
+}
+
+.resume-editor-note {
+	color: var(--muted);
+	margin-bottom: 0.9rem;
+}
+
+.resume-form {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 0.75rem;
+}
+
+.resume-form .btn-primary {
+	justify-self: start;
+}
+
 .contact-grid {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -501,6 +520,14 @@ footer {
 	.testimonials-grid,
 	.resume-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.resume-form {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.resume-form .btn-primary {
+		grid-column: 1 / -1;
 	}
 
 	.contact-grid {

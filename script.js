@@ -74,22 +74,38 @@
 			<div class="resume-grid">
 				<article class="card">
 					<h3>Datos personales</h3>
-					<p><strong>Nombre:</strong> Camila Rojas (ejemplo)</p>
-					<p><strong>Ciudad base:</strong> Medellín, Colombia</p>
-					<p><strong>Correo:</strong> camila.alojamientos@example.com</p>
-					<p><strong>Perfil:</strong> Coordinadora de experiencias de hospedaje urbano con enfoque en reservas por zonas de ciudad.</p>
+					<p><strong>Nombre:</strong> <span data-cv="nombre">Camila Rojas (ejemplo)</span></p>
+					<p><strong>Ciudad base:</strong> <span data-cv="ciudad">Medellín, Colombia</span></p>
+					<p><strong>Correo:</strong> <span data-cv="correo">camila.alojamientos@example.com</span></p>
+					<p><strong>Perfil:</strong> <span data-cv="perfil">Coordinadora de experiencias de hospedaje urbano con enfoque en reservas por zonas de ciudad.</span></p>
 				</article>
 				<article class="card">
 					<h3>Formación</h3>
-					<p><strong>Tecnología:</strong> Gestión Turística y Hotelera</p>
-					<p><strong>Diplomado:</strong> Revenue Management para alojamientos urbanos</p>
-					<p><strong>Áreas:</strong> Optimización de ocupación, segmentación por barrios, experiencia del huésped y analítica de reservas.</p>
+					<p><strong>Tecnología:</strong> <span data-cv="formacion">Gestión Turística y Hotelera</span></p>
+					<p><strong>Diplomado:</strong> <span data-cv="diplomado">Revenue Management para alojamientos urbanos</span></p>
+					<p><strong>Áreas:</strong> <span data-cv="areas">Optimización de ocupación, segmentación por barrios, experiencia del huésped y analítica de reservas.</span></p>
 				</article>
 				<article class="card">
 					<h3>Repositorios</h3>
 					<div class="resume-links">
-						<a href="https://github.com/Santtiy/Laboratorio_1" target="_blank" rel="noopener noreferrer">Demo plataforma de alojamientos</a>
-						<a href="https://github.com/Santtiy" target="_blank" rel="noopener noreferrer">Portafolio de repositorios</a>
+						<a data-cv-link="repo1" href="https://example.com/repo-alojamientos" target="_blank" rel="noopener noreferrer">Repositorio ejemplo 1</a>
+						<a data-cv-link="repo2" href="https://example.com/perfil-desarrollador" target="_blank" rel="noopener noreferrer">Repositorio ejemplo 2</a>
+					</div>
+				</article>
+				<article class="card resume-editor">
+					<h3>Tu hoja de vida (editable)</h3>
+					<p class="resume-editor-note">Completa estos campos para personalizar la hoja de vida de arriba con tus datos.</p>
+					<div class="resume-form">
+						<input type="text" data-cv-input="nombre" placeholder="Nombre completo">
+						<input type="text" data-cv-input="ciudad" placeholder="Ciudad base">
+						<input type="email" data-cv-input="correo" placeholder="Correo electrónico">
+						<input type="text" data-cv-input="perfil" placeholder="Resumen de perfil">
+						<input type="text" data-cv-input="formacion" placeholder="Formación principal">
+						<input type="text" data-cv-input="diplomado" placeholder="Curso o diplomado">
+						<input type="text" data-cv-input="areas" placeholder="Áreas de interés">
+						<input type="text" data-cv-input="repo1" placeholder="URL repositorio ejemplo 1 (https://example.com/...)">
+						<input type="text" data-cv-input="repo2" placeholder="URL repositorio ejemplo 2 (https://example.com/...)">
+						<button type="button" class="btn-primary" data-cv-action="aplicar">Aplicar mis datos</button>
 					</div>
 				</article>
 			</div>
@@ -97,10 +113,64 @@
 
 		if (contactSection instanceof HTMLElement) {
 			main.insertBefore(section, contactSection);
+			setupResumeEditor(section);
 			return;
 		}
 
 		main.appendChild(section);
+		setupResumeEditor(section);
+	};
+
+	const setupResumeEditor = (section) => {
+		const applyButton = section.querySelector("[data-cv-action='aplicar']");
+		if (!(applyButton instanceof HTMLButtonElement)) {
+			return;
+		}
+
+		const inputByKey = (key) => section.querySelector(`[data-cv-input='${key}']`);
+		const outputByKey = (key) => section.querySelector(`[data-cv='${key}']`);
+		const linkByKey = (key) => section.querySelector(`[data-cv-link='${key}']`);
+
+		const normalizeUrl = (value, fallback) => {
+			const trimmed = value.trim();
+			if (!trimmed) {
+				return fallback;
+			}
+			if (/^https?:\/\//i.test(trimmed)) {
+				return trimmed;
+			}
+			return `https://${trimmed}`;
+		};
+
+		const updateText = (key) => {
+			const input = inputByKey(key);
+			const output = outputByKey(key);
+			if (!(input instanceof HTMLInputElement) || !(output instanceof HTMLElement)) {
+				return;
+			}
+			if (input.value.trim()) {
+				output.textContent = input.value.trim();
+			}
+		};
+
+		applyButton.addEventListener("click", () => {
+			["nombre", "ciudad", "correo", "perfil", "formacion", "diplomado", "areas"].forEach(updateText);
+
+			const repo1Input = inputByKey("repo1");
+			const repo2Input = inputByKey("repo2");
+			const repo1Link = linkByKey("repo1");
+			const repo2Link = linkByKey("repo2");
+
+			if (repo1Input instanceof HTMLInputElement && repo1Link instanceof HTMLAnchorElement) {
+				repo1Link.href = normalizeUrl(repo1Input.value, "https://example.com/repo-alojamientos");
+				repo1Link.textContent = "Repositorio ejemplo 1";
+			}
+
+			if (repo2Input instanceof HTMLInputElement && repo2Link instanceof HTMLAnchorElement) {
+				repo2Link.href = normalizeUrl(repo2Input.value, "https://example.com/perfil-desarrollador");
+				repo2Link.textContent = "Repositorio ejemplo 2";
+			}
+		});
 	};
 
 	const setupResponsiveMenu = () => {
