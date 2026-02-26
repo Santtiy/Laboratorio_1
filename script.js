@@ -24,11 +24,89 @@
 		setupNavbarScrollStyle();
 		setupDynamicBackground();
 		setupResumeSection();
+		setupVisibleSectionDetection();
+		setupActiveNavHighlight();
 		setupResponsiveMenu();
 		setupSmoothScroll();
 		setupContactFormValidation();
 		setupHeroCtaInteraction();
 		setupScrollReveal();
+	};
+
+	const setupActiveNavHighlight = () => {
+		const navLinks = Array.from(document.querySelectorAll(SELECTORS.navLinks));
+		if (!navLinks.length) {
+			return;
+		}
+
+		const setActiveLink = (sectionId) => {
+			navLinks.forEach((link) => {
+				const href = link.getAttribute("href");
+				const isActive = href === `#${sectionId}`;
+				link.classList.toggle("is-active", isActive);
+				link.setAttribute("aria-current", isActive ? "page" : "false");
+			});
+		};
+
+		document.addEventListener("visible-section-change", (event) => {
+			const detail = event.detail;
+			if (!detail || typeof detail.sectionId !== "string") {
+				return;
+			}
+			setActiveLink(detail.sectionId);
+		});
+
+		const initialSection = document.body.getAttribute("data-visible-section");
+		if (initialSection) {
+			setActiveLink(initialSection);
+		}
+	};
+
+	const setupVisibleSectionDetection = () => {
+		const sections = Array.from(document.querySelectorAll("main section[id]"));
+		if (!sections.length) {
+			return;
+		}
+
+		let currentSectionId = "";
+
+		const updateCurrentSection = (sectionId) => {
+			if (!sectionId || sectionId === currentSectionId) {
+				return;
+			}
+
+			currentSectionId = sectionId;
+			document.body.setAttribute("data-visible-section", sectionId);
+			document.dispatchEvent(new CustomEvent("visible-section-change", {
+				detail: { sectionId }
+			}));
+		};
+
+		if (!("IntersectionObserver" in window)) {
+			updateCurrentSection(sections[0].id);
+			return;
+		}
+
+		const observer = new IntersectionObserver((entries) => {
+			const visibleEntries = entries
+				.filter((entry) => entry.isIntersecting)
+				.sort((entryA, entryB) => entryB.intersectionRatio - entryA.intersectionRatio);
+
+			if (!visibleEntries.length) {
+				return;
+			}
+
+			const topVisibleSection = visibleEntries[0].target;
+			if (topVisibleSection instanceof HTMLElement) {
+				updateCurrentSection(topVisibleSection.id);
+			}
+		}, {
+			threshold: [0.25, 0.5, 0.75],
+			rootMargin: "-20% 0px -55% 0px"
+		});
+
+		sections.forEach((section) => observer.observe(section));
+		updateCurrentSection(sections[0].id);
 	};
 
 	const setupNavbarScrollStyle = () => {
